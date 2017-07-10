@@ -9,14 +9,9 @@ FROM resin/raspberrypi3-alpine-python:3.6.1-slim
 
 # Install ffmpeg.
 RUN \
-  apk update && \
-  apk add --no-cache ffmpeg && \
+  apk add --no-cache ffmpeg git&& \
   pip install --no-cache-dir youtube-dl bottle && \
-  mkdir -p /youtube-dl
-
-WORKDIR /youtube-dl
-
-COPY . /youtube-dl
+  git clone https://github.com/manbearwiz/youtube-dl-server.git /youtube-dl
 
 EXPOSE 8080
 
