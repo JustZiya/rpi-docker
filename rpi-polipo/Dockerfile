@@ -1,13 +1,16 @@
-FROM resin/rpi-raspbian:jessie
+FROM arm32v6/alpine:edge
 
-MAINTAINER Ziya <Ziya.TLF@Gmail.com>
+LABEL maintainer="Ziya<Ziya.TLF@Gmail.com>"
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y polipo
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" > /etc/apk/repositories \
+    && apk update \
+    && apk add polipo
 
 COPY files/polipo/config /etc/polipo/config
-COPY files/entrypoint.sh /entrypoint.sh
+
+ENV SERVER_ADDR=172.18.0.3:1984
 
 EXPOSE 1987
-ENTRYPOINT ["/entrypoint.sh"]
 
+CMD sed -i -e "s|%TOR_SERVER_ADDR%|$SERVER_ADDR|g" /etc/polipo/config \
+    && polipo

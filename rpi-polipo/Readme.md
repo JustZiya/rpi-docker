@@ -1,1 +1,0 @@
-Run 的时候需要映射 1987 端口，并指定变量SOCKS5代理 TOR_SERVER_ADDR 的 IP 和端口。
